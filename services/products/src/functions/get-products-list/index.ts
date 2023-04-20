@@ -9,8 +9,8 @@ export default {
         path: 'products',
         cors: {
           origin: '*'
-        }
+        },
       },
     },
-  ],
+  ]
 };

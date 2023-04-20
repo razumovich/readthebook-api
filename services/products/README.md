@@ -23,5 +23,6 @@ Depending on your preferred package manager, follow the instructions below to de
 - `npm start`
 
 ### Endpoints
-- https://aa38y0xs8j.execute-api.eu-west-1.amazonaws.com/dev/products shows the list of all products
-- https://aa38y0xs8j.execute-api.eu-west-1.amazonaws.com/dev/products/{productId} shows the specific product
+- POST https://yc7al9ctle.execute-api.eu-west-1.amazonaws.com/dev/products Creates a product
+- GET https://yc7al9ctle.execute-api.eu-west-1.amazonaws.com/dev/products shows the list of all products
+- GET https://yc7al9ctle.execute-api.eu-west-1.amazonaws.com/dev/products/{productId} shows the specific product
