@@ -26,19 +26,9 @@ const serverlessConfiguration: AWS = {
         statements: [
           {
             Effect: 'Allow',
-            Action: 'dynamodb:Scan',
+            Action: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem'],
             Resource: '*'
           },
-          {
-            Effect: 'Allow',
-            Action: 'dynamodb:GetItem',
-            Resource: '*'
-          },
-          {
-            Effect: 'Allow',
-            Action: 'dynamodb:PutItem',
-            Resource: '*'
-          }
         ]
       }
     },
@@ -64,6 +54,10 @@ const serverlessConfiguration: AWS = {
       platform: 'node',
       concurrency: 10,
     },
+    "serverless-offline": {
+      httpPort: 2880,
+      lambdaPort: 2881
+    }
   },
   resources: {
     Resources: {

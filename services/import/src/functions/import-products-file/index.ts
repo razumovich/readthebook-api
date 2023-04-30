@@ -6,9 +6,16 @@ export default {
     {
       http: {
         method: 'get',
-        path: 'products/{productId}',
+        path: 'import',
         cors: true,
+        request: {
+          parameters: {
+            querystrings: {
+              name: true
+            }
+          }
+        }
       },
     },
-  ]
+  ],
 };
