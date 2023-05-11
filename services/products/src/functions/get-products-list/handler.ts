@@ -5,13 +5,14 @@ import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { Product, Stock } from "@common/types";
 
+const dynamoDBClient = new DynamoDBClient({ region: process.env.REGION });
+
 const getProductsList: ValidatedEventAPIGatewayProxyEvent<null> = async () => {
     try {
-        const client = new DynamoDBClient({ region: process.env.REGION });
-        const { Items: productItems } = await client.send(new ScanCommand({
+        const { Items: productItems } = await dynamoDBClient.send(new ScanCommand({
             TableName: process.env.PRODUCTS_TABLE
         }));
-        const { Items: stockItems } = await client.send(new ScanCommand({
+        const { Items: stockItems } = await dynamoDBClient.send(new ScanCommand({
             TableName: process.env.STOCKS_TABLE
         }));
         const stocks = stockItems.map(item => unmarshall(item)) as Stock[];

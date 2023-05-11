@@ -1,9 +1,15 @@
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import csv from 'csv-parser';
 import { Stream } from 'stream';
-import { BUCKET_NAME } from "@common/constants";
+import {
+    SQSClient,
+    GetQueueUrlCommand,
+    SendMessageCommand,
+} from "@aws-sdk/client-sqs";
+import { BUCKET_NAME, SQS_QUEUE } from "@common/constants";
 
-const client = new S3Client({});
+const s3Client = new S3Client({});
+const sqsClient = new SQSClient({});
 
 const importFileParser = async (event) => {
     try {
@@ -13,15 +19,26 @@ const importFileParser = async (event) => {
             throw new Error('Key does not exist in the bucket')
         }
 
-        const command = new GetObjectCommand({
+        const s3ClientResponse = await s3Client.send(new GetObjectCommand({
             Bucket: BUCKET_NAME,
             Key: key
-        });
-        const response = await client.send(command);
+        }));
 
-        (response.Body as Stream)
+        /**
+         * Guess, there's a more performant way to get QueueUrl, but I just didn't want to hardcode it in the configuration.
+         * Need to think about it in the future.
+          */
+        const { QueueUrl } = await sqsClient.send(new GetQueueUrlCommand({ QueueName: SQS_QUEUE }));
+
+        (s3ClientResponse.Body as Stream)
             .pipe(csv())
-            .on('data', data => console.log(data))
+            .on('data',product => {
+                sqsClient.send(new SendMessageCommand({
+                    QueueUrl,
+                    DelaySeconds: 10,
+                    MessageBody: JSON.stringify(product)
+                }));
+            });
     } catch (e) {
         console.error(e);
     }
