@@ -32,7 +32,7 @@ const input = {
                         "id": { "S": "7567ec4b-b10c-48c5-9345-fc73c48a80a3" },
                         "title": { "S": "Love" },
                         "description": { "S": "By Roddy Doyle, Designed by Sarahmay Wilkinson" },
-                        "image": { "S": "https://static01.nyt.com/images/2020/12/20/books/review/20BestBookCovers-03/20BestBookCovers-03-superJumbo.jpg?quality=75&auto=webp" },
+                        "image": { "S": "https://static01.nyt.com/images/2020/12/20/books/review/20BestBookCovers-04/20BestBookCovers-04-superJumbo.jpg?quality=75&auto=webp" },
                         "price": { "N": "23" },
                     }
                 }

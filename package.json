@@ -6,10 +6,21 @@
   "repository": "git@github.com:razumovich/read-the-book-api.git",
   "license": "MIT",
   "private": true,
-  "workspaces": ["./services/*"],
+  "workspaces": [
+    "./services/*"
+  ],
   "scripts": {
-    "start": "yarn workspace products start",
+    "start:products": "yarn workspace products start",
+    "start:import": "yarn workspace import start",
+    "start": "concurrently \"yarn start:products\" \"yarn start:import\"",
     "deploy:products": "yarn workspace products deploy",
-    "deploy:all": "yarn deploy:products"
+    "deploy:import": "yarn workspace import deploy",
+    "deploy": "yarn deploy:products && yarn deploy:import",
+    "clean:products": "yarn workspace products clean",
+    "clean:import": "yarn workspace import clean",
+    "clean": "yarn clean:products && yarn clean:import"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
   }
 }
