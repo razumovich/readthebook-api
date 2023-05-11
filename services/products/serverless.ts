@@ -3,6 +3,7 @@ import { KeyType, ScalarAttributeType } from "@aws-sdk/client-dynamodb";
 import getProductsList from '@functions/get-products-list';
 import getProductById from '@functions/get-product-by-id';
 import createProduct from "@functions/create-product";
+import catalogBatchProcess from "@functions/catalog-batch-process";
 
 const serverlessConfiguration: AWS = {
   service: 'products',
@@ -26,7 +27,7 @@ const serverlessConfiguration: AWS = {
         statements: [
           {
             Effect: 'Allow',
-            Action: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem'],
+            Action: ['dynamodb:Scan', 'dynamodb:GetItem', 'dynamodb:PutItem', 'SNS:Publish'],
             Resource: '*'
           },
         ]
@@ -41,7 +42,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { getProductsList, getProductById, createProduct },
+  functions: { getProductsList, getProductById, createProduct, catalogBatchProcess },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -103,6 +104,24 @@ const serverlessConfiguration: AWS = {
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1
           }
+        }
+      },
+      catalogItemsQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: 'catalogItemsQueue'
+        }
+      },
+      createProductTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: 'createProductTopic',
+          Subscription: [
+            {
+              Endpoint : 'aliaksandr.razumovich@gmail.com',
+              Protocol : 'email'
+            }
+          ]
         }
       }
     }

@@ -34,7 +34,7 @@ const serverlessConfiguration: AWS = {
         statements: [
           {
             Effect: 'Allow',
-            Action: ['s3:PutObject', 's3:GetObject'],
+            Action: ['s3:PutObject', 's3:GetObject', 'sqs:GetQueueUrl', 'sqs:SendMessage'],
             Resource: '*'
           },
         ]

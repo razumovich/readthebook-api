@@ -6,17 +6,18 @@ import { DynamoDBClient, GetItemCommand, ScalarAttributeType, ScanCommand } from
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { Product, Stock } from "@common/types";
 
+const dynamoDBClient = new DynamoDBClient({ region: process.env.REGION });
+
 const getProductsById: ValidatedEventAPIGatewayProxyEvent<null> = async (event: APIGatewayProxyEvent) => {
   try {
     const { productId } = event.pathParameters;
-    const client = new DynamoDBClient({ region: process.env.REGION });
-    const { Item } = await client.send(new GetItemCommand({
+    const { Item } = await dynamoDBClient.send(new GetItemCommand({
       TableName: process.env.PRODUCTS_TABLE,
       Key: {
         'id': { [ScalarAttributeType.S]: productId }
       },
     }));
-    const { Items: stockItems } = await client.send(new ScanCommand({
+    const { Items: stockItems } = await dynamoDBClient.send(new ScanCommand({
       TableName: process.env.STOCKS_TABLE
     }));
 
