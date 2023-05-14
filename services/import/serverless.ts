@@ -12,6 +12,7 @@ const serverlessConfiguration: AWS = {
       'serverless-deployment-bucket',
       'serverless-offline',
   ],
+  useDotenv: true,
   provider: {
     region: REGION,
     name: 'aws',
@@ -34,7 +35,7 @@ const serverlessConfiguration: AWS = {
         statements: [
           {
             Effect: 'Allow',
-            Action: ['s3:PutObject', 's3:GetObject'],
+            Action: ['s3:PutObject', 's3:GetObject', 'sqs:GetQueueUrl', 'sqs:SendMessage'],
             Resource: '*'
           },
         ]
