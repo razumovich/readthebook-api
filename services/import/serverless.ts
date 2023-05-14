@@ -12,6 +12,7 @@ const serverlessConfiguration: AWS = {
       'serverless-deployment-bucket',
       'serverless-offline',
   ],
+  useDotenv: true,
   provider: {
     region: REGION,
     name: 'aws',

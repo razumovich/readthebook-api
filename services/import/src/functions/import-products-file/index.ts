@@ -8,6 +8,7 @@ export default {
         method: 'get',
         path: 'import',
         cors: true,
+        authorizer: 'arn:aws:lambda:${self:provider.region}:${env:AWS_ACCOUNT_ID}:function:authorization-dev-basicAuthorizer',
         request: {
           parameters: {
             querystrings: {
